@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.title, footer {
+	font-family: 'Meddon', cursive;
+	color: #331a00;
+}
