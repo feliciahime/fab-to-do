@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+
 }
 
 code {
@@ -12,7 +14,17 @@ code {
     monospace;
 }
 
-.title, footer {
+footer {
 	font-family: 'Meddon', cursive;
 	color: #331a00;
+}
+
+header {
+
+
+}
+
+h1 {
+	font-family: 'Meddon', cursive;
+	color: ;
 }
