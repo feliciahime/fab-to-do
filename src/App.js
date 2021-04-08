@@ -4,10 +4,11 @@ import './App.css';
 console.log("Booting up what to do...");
 
 function App() {
-  const [toDoItem, setToDoItem] = React.useState("");
-  const [itemDescription, setItemDescription] = React.useState("");
-  const [list, setList] =  React.useState([]);
+  const [toDoItem, setToDoItem] = useState("");
+  const [itemDescription, setItemDescription] = useState("");
+  const [list, setList] =  useState([]);
   const [isDeleted, setDeleted] = useState(false);
+  const [inHover, setHover] = useState(false);
 
 
   function onAddItem (ev) {
@@ -15,20 +16,36 @@ function App() {
     ev.preventDefault();
     setList([...list, { toDoItem: toDoItem, itemDescription: itemDescription}
       ]);
+    console.log('Item added!');
     }
       
-
   function onToDoItemChange (ev) {
+    console.log('Something should happen here.');
       let value = ev.target.value;
       let name = ev.target.name;
+        return ((
+          <div>
+            <input 
+              placeholder='task' 
+              value=''
+                onChange={e => setToDoItem(e.target.value)}
+                />
 
-      if (name === 'toDoItem') { setToDoItem(value)}
-      if (name === 'itemDescription') {setItemDescription(value)}
-      if (name === 'isDeleted') {setDeleted(value)}
-
-      setToDoItem(value);
-      console.log('updated item: ', value);
+            <input 
+              placeholder='description' 
+              value=''
+                onChange={e => setItemDescription(e.target.value)}
+                />
+          </div>
+          ));
     }
+
+  function onDeleteItem (ev) {
+    console.log(toDoItem);
+    let value = toDoItem;
+    setDeleted(true);
+    console.log('Deleting item: ', toDoItem, list);
+  }
 
 
   return (
@@ -40,12 +57,14 @@ function App() {
         </header>
         
 
-
         <div className="Container">
           <div className="item-list">
             {list.map(item => {
               return (
-                <div><b>{item.toDoItem}  </b> {item.itemDescription} <input type="checkbox" defaultChecked={false} />
+                <div>
+                    <p><input type="checkbox" defaultChecked={false} /><b>{item.toDoItem}  </b>  {item.itemDescription} 
+                <button onClick={onToDoItemChange}>Edit</button>   <button onClick={onDeleteItem}>Delete</button></p>
+                
                 </div>
                 );
             })}

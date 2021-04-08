@@ -48,6 +48,11 @@ let total = toDoItem.length;
   // }
 
 
+        if (name === 'toDoItem') { setToDoItem(value)}
+        if (name === 'itemDescription') {setItemDescription(value)}
+        if (name === 'isDeleted') {setDeleted(value)}
+        console.log('updated item: ', name, value);
+
   function onToDoItemChange (ev) {
     let value = ev.target.value;
     setToDoItem(value);
