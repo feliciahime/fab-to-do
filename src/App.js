@@ -8,16 +8,27 @@ function App() {
   const [itemDescription, setItemDescription] = useState("");
   const [list, setList] =  useState([]);
   const [isDeleted, setDeleted] = useState(false);
-  const [inHover, setHover] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [editModalIndex, setEditModalIndex] = useState(null);
+  // const [inHover, setHover] = useState(false);
 
 
   function onAddItem (ev) {
     console.log('This button works');
     ev.preventDefault();
-    setList([...list, { toDoItem: toDoItem, itemDescription: itemDescription}
-      ]);
-    console.log('Item added!');
-    }
+    const newItem = {
+      toDoItem: toDoItem, 
+      itemDescription: itemDescription, 
+      isDeleted: false, 
+      isCompleted: false, 
+    };
+    setList([
+      ...list,
+      newItem
+    ]);
+    console.log('Item added: ', newItem, list);
+
+  }
       
   function onToDoItemChange (ev) {
     console.log('Something should happen here.');
