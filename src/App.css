@@ -11,6 +11,8 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .App-link {
@@ -30,10 +32,13 @@
 }
 
 
-.item-form {
+.add-task {
   padding-top: 20px;
-  background-color: #6B849E;
+  background-color: #FAFAF9;
   padding-bottom: 25px;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .item-list {
@@ -43,7 +48,13 @@
 
 button {
   margin-left: 10px;
+  padding: 5px;
 }
 
 
+label {
+  padding: 5px;
+  font-size: 14px;
+  font-weight: bold;
 
+}
