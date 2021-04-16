@@ -17,6 +17,7 @@ function App() {
   const [isDeleted, setIsDeleted] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [limitBy, setLimitBy] = useState(false);
+  const [taskType, setTaskType] = useState(null);
   const [list, setList] =  useState([
     { task: 'Read a book', 
       details: '50 pages', 
@@ -50,7 +51,8 @@ function App() {
       task: toDoItem, 
       details: itemDescription, 
       isDeleted: false, 
-      isCompleted: false, 
+      isCompleted: false,
+      type: taskType, 
     };
     setList([
       ...list,
@@ -99,7 +101,7 @@ function App() {
     <div className="App">
         <header className="App-header">
           <h1 className="title">My To-Do list</h1>
-          <label>Only show:
+          <label> Show
             <select onChange={onLimitByChange} value={limitBy}>
               <option value="all">all</option>
               {
@@ -107,14 +109,17 @@ function App() {
                   <option value={taskType.type}>{taskType.type}</option>
                 ))
               }
-            </select>
+            </select> tasks:
           </label>
         </header>
         
 
         <div className="Container">
           <div className="item-list">
-            {list.map(list => {
+            {list
+
+              .filter(list => limitBy === false || list.type === limitBy)
+              .map(list => {
               return (
                 <div>
                     <p><input type="checkbox" defaultChecked={false} /><b>{list.task}  </b>  {list.details}</p> 
@@ -140,6 +145,17 @@ function App() {
                 onChange={e => setItemDescription(e.target.value)}
                 />
               </label>
+             <select value={taskType} onChange={e => setTaskType(e.target.value)}>
+              <option value="category">category</option>
+              {
+                taskTypes.map(taskType => (
+                  <option 
+                      value={taskType.type}>
+                      {taskType.type}
+                      </option>
+                ))
+              }
+            </select>
               <button onClick={onAddItem}>Submit</button>
           </div>
         </div>

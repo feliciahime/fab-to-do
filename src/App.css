@@ -58,3 +58,6 @@ label {
   font-weight: bold;
 
 }
+select {
+  margin: 5px;
+}
