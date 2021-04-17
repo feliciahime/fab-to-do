@@ -14,26 +14,22 @@ const taskTypes = [
 function App() {
   const [toDoItem, setToDoItem] = useState("");
   const [itemDescription, setItemDescription] = useState("");
-  const [isDeleted, setIsDeleted] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [limitBy, setLimitBy] = useState(false);
   const [taskType, setTaskType] = useState(null);
   const [list, setList] =  useState([
     { task: 'Read a book', 
-      details: '50 pages', 
-      isDeleted: false, 
+      details: '50 pages',  
       isCompleted: false, 
       image: goalImage,
       type: 'goals'},
     { task: 'Write a poem', 
       details: 'haiku', 
-      isDeleted: false, 
       isCompleted: false, 
       image: workImage,
       type: 'work'},
     { task: 'Cook Dinner', 
-      details: 'Fish and chips', 
-      isDeleted: false, 
+      details: 'Fish and chips',  
       isCompleted: false,
       image: socialImage,
       type: 'social'},
@@ -41,7 +37,6 @@ function App() {
   console.log("Booting up what to do...", list);
 
   const [editModalIndex, setEditModalIndex] = useState(null);
-  // const [inHover, setHover] = useState(false);
 
 
   function onAddItem (ev) {
@@ -50,7 +45,6 @@ function App() {
     const newItem = {
       task: toDoItem, 
       details: itemDescription, 
-      isDeleted: false, 
       isCompleted: false,
       type: taskType, 
     };
@@ -102,13 +96,28 @@ function App() {
       ])
     }
 
+
+  function onTypeChange (ev) {
+    console.log('Changing task type...');
+      let value = ev.target.value;
+      const updatedItem = {
+        ...list[editModalIndex],
+      type: value,
+      };
+      setList([
+      ...list.slice(0, editModalIndex),
+      updatedItem,
+      ...list.slice(editModalIndex + 1),
+      ])
+    }
+ 
+
   function onDeleteItem () {
     const listCopy = list.slice();
     listCopy.splice(editModalIndex, 1);
     setList(listCopy);
     setEditModalIndex(null);
     let value = toDoItem;
-    setIsDeleted(true);
     console.log("Here's what you have now: ", list);
   }
 
@@ -151,11 +160,20 @@ function App() {
                           />
                           <input 
                             value={list[editModalIndex].details}
-                            onChange={onDetailsChange} // Need to write a new function to change.
-                            // Then add a selector and a new function to change category.
-
-                            //Need to create a list with 1. title and 2. list of objects?
+                            onChange={onDetailsChange} 
                           />
+                          <select value={taskType} onChange={onTypeChange}>
+                              <option value="category">category</option>
+                              {
+                                taskTypes.map(taskType => (
+                                  <option 
+                                      value={taskType.type}>
+                                      {taskType.type}
+                                      </option>
+                                ))
+                              }
+                            </select>
+
 
                 <button onClick={onDeleteItem}>Delete</button>
                 <button onClick={() => setEditModalIndex(null)}>Save</button>
