@@ -87,13 +87,29 @@ function App() {
       ...list.slice(editModalIndex + 1),
       ])
     }
-      
+
+  function onDetailsChange (ev) {
+    console.log('Changing details...');
+      let value = ev.target.value;
+      const updatedItem = {
+        ...list[editModalIndex],
+      details: value,
+      };
+      setList([
+      ...list.slice(0, editModalIndex),
+      updatedItem,
+      ...list.slice(editModalIndex + 1),
+      ])
+    }
 
   function onDeleteItem () {
-    console.log(toDoItem);
+    const listCopy = list.slice();
+    listCopy.splice(editModalIndex, 1);
+    setList(listCopy);
+    setEditModalIndex(null);
     let value = toDoItem;
     setIsDeleted(true);
-    console.log('Deleting item: ', toDoItem, list);
+    console.log("Here's what you have now: ", list);
   }
 
 
@@ -118,16 +134,37 @@ function App() {
           <div className="item-list">
             {list
 
-              .filter(list => limitBy === false || list.type === limitBy)
-              .map(list => {
-              return (
+              .filter(toDoItem => limitBy === false || toDoItem.type === limitBy)
+              .map((toDoItem, index) => (
                 <div>
-                    <p><input type="checkbox" defaultChecked={false} /><b>{list.task}  </b>  {list.details}</p> 
-                <p><button onClick={onToDoItemChange}>Edit</button> <button onClick={onDeleteItem}>Delete</button></p>
-                
+                    <p><input type="checkbox" defaultChecked={false} /><b>{toDoItem.task}  </b>  {toDoItem.details}</p> 
+                <p><button onClick={() => setEditModalIndex(index)}>Edit</button></p> 
+    {
+                  editModalIndex === index ? (
+                    <div className="EditModal">
+                      <div className="EditModal-backdrop"></div>
+                      <div className="EditModal-contents">
+                        <div className="EditModal-title">Edit Task</div>
+                          <input 
+                            value={list[editModalIndex].task}
+                            onChange={onToDoItemChange}
+                          />
+                          <input 
+                            value={list[editModalIndex].details}
+                            onChange={onDetailsChange} // Need to write a new function to change.
+                            // Then add a selector and a new function to change category.
+
+                            //Need to create a list with 1. title and 2. list of objects?
+                          />
+
+                <button onClick={onDeleteItem}>Delete</button>
+                <button onClick={() => setEditModalIndex(null)}>Save</button>
+                  </div>
                 </div>
-                );
-            })}
+              ) : null
+            }
+                </div>
+                ))}
           </div>
         
           <div className="add-task">
@@ -140,7 +177,7 @@ function App() {
               </label>
               <label>Details: 
                 <input
-                placeholder=" "
+                placeholder=""
                 value={itemDescription}
                 onChange={e => setItemDescription(e.target.value)}
                 />
