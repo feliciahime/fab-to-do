@@ -5,53 +5,57 @@ import workImage from './images/work.png';
 import goalImage from './images/goals.png';
 import socialImage from './images/social.png';
 
-const taskTypes = [
-    {type: 'work', imageSrc: workImage},
-    {type: 'goals', imageSrc: goalImage},
-    {type: 'social', imageSrc: socialImage},
-  ];
-
 function App() {
   const [toDoItem, setToDoItem] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [limitBy, setLimitBy] = useState(false);
-  const [taskType, setTaskType] = useState(null);
+  const [listType, setListType] = useState([
+    {type: 'work'},
+    {type: 'goals'},
+    {type: 'social'},
+  	]);
   const [listMap, setListMap] = useState({});
+  const [newName, setNewName] = useState("");
 
-  // so the key for listMap should get used in the JSX template {key}.
   const [list, setList] =  useState([
     { task: 'Read a book', 
       details: '50 pages',  
       isCompleted: false, 
       image: goalImage,
-      type: 'goals'},
+      type: 'Goals'},
     { task: 'Write a poem', 
       details: 'haiku', 
       isCompleted: false, 
       image: workImage,
-      type: 'work'},
+      type: 'Work'},
     { task: 'Cook Dinner', 
       details: 'Fish and chips',  
       isCompleted: false,
       image: socialImage,
-      type: 'social'},
+      type: 'Social'},
   ]);
-  console.log("Booting up what to do...", list);
+  console.log("Booting up what to do...", listType);
 
   const [editModalIndex, setEditModalIndex] = useState(null);
 
   function createList (ev) {
-    let value = ev.target.value;
     console.log("Let's create a new list!");
-    const newList = {
-      value: []
-    };
-    setListMap(newList);
-    console.log('Here it is: ', newList);
+  	ev.preventDefault();
+    const newType = {type: newName};
+    setListType([
+      ...listType,
+      newType
+    ]);
+    console.log('Category added: ', newName);
+    console.log('Here are all the categories: ', listType);
   }
 
-function setListName (ev) {}
+  function createListName (ev) {
+  	let newName = ev.target.value;
+  }
+
+//create buttons to setLimitBy=true and listType; then create functions for onClick events with buttons
 
   function onAddItem (ev) {
     console.log('This button works');
@@ -60,7 +64,7 @@ function setListName (ev) {}
       task: toDoItem, 
       details: itemDescription, 
       isCompleted: false,
-      type: taskType, 
+      type: listType, 
     };
     setList([
       ...list,
@@ -134,19 +138,27 @@ function setListName (ev) {}
     console.log("Here's what you have now: ", list);
   }
 
-// create new list modal so that it opens and you can create the name of the list (value: [])
   return (
     <div className="App">
         <header className="App-header">
           <h1 className="title">My To-Do list</h1>
-          <button onClick={createList}>+ New List</button>
-          
+			<div className="Add-List-Type">
+			
+            <label>Item:
+            <input
+            placeholder="Add a new list "
+            value={newName}
+            onChange={e => setNewName(e.target.value)}
+            />
+          	</label>
+            <button onClick={createList}>+ New List</button>
+          </div>
           <label> Show
             <select onChange={onLimitByChange} value={limitBy}>
               <option value="all">all</option>
               {
-                taskTypes.map(taskType => (
-                  <option value={taskType.type}>{taskType.type}</option>
+                listType.map(listType => (
+                  <option value={listType.type}>{listType.type}</option>
                 ))
               }
             </select> tasks:
@@ -178,13 +190,13 @@ function setListName (ev) {}
                             value={list[editModalIndex].details}
                             onChange={onDetailsChange} 
                           />
-                          <select value={taskType} onChange={onTypeChange}>
+                          <select value={listType} onChange={onTypeChange}>
                               <option value="category">category</option>
                               {
-                                taskTypes.map(taskType => (
+                                listType.map(listType => (
                                   <option 
-                                      value={taskType.type}>
-                                      {taskType.type}
+                                      value={listType.type}>
+                                      {listType.type}
                                       </option>
                                 ))
                               }
@@ -216,13 +228,13 @@ function setListName (ev) {}
                 onChange={e => setItemDescription(e.target.value)}
                 />
               </label>
-             <select value={taskType} onChange={e => setTaskType(e.target.value)}>
+             <select value={listType} onChange={e => setListType(e.target.value)}>
               <option value="category">category</option>
               {
-                taskTypes.map(taskType => (
+                listType.map(listType => (
                   <option 
-                      value={taskType.type}>
-                      {taskType.type}
+                      value={listType.type}>
+                      {listType.type}
                       </option>
                 ))
               }
