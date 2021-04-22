@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
 
-import workImage from './images/work.png';
-import goalImage from './images/goals.png';
-import socialImage from './images/social.png';
-
 function App() {
   const [toDoItem, setToDoItem] = useState("");
   const [itemDescription, setItemDescription] = useState("");
@@ -22,18 +18,15 @@ function App() {
     { task: 'Read a book', 
       details: '50 pages',  
       isCompleted: false, 
-      image: goalImage,
-      type: 'Goals'},
+      type: 'goals'},
     { task: 'Write a poem', 
       details: 'haiku', 
       isCompleted: false, 
-      image: workImage,
-      type: 'Work'},
+      type: 'work'},
     { task: 'Cook Dinner', 
       details: 'Fish and chips',  
       isCompleted: false,
-      image: socialImage,
-      type: 'Social'},
+      type: 'social'},
   ]);
   console.log("Booting up what to do...", listType);
 
@@ -128,7 +121,6 @@ function App() {
       ])
     }
  
-
   function onDeleteItem () {
     const listCopy = list.slice();
     listCopy.splice(editModalIndex, 1);
@@ -136,7 +128,17 @@ function App() {
     setEditModalIndex(null);
     let value = toDoItem;
     console.log("Here's what you have now: ", list);
-  }
+    }
+
+
+  function setFilter (ev) {
+  	let value = ev.target.value;
+  	setLimitBy(value);
+    // setLimitBy(value);
+    console.log(value);
+    }
+
+
 
   return (
     <div className="App">
@@ -146,14 +148,25 @@ function App() {
 			
             <label>Item:
             <input
-            placeholder="Add a new list "
+            placeholder="Create new list"
             value={newName}
             onChange={e => setNewName(e.target.value)}
             />
           	</label>
             <button onClick={createList}>+ New List</button>
+            <br />
+            <br />
           </div>
-          <label> Show
+
+          <div>
+          <button className="list-button"  onClick={setFilter} value='work'>Work List</button>
+          <button className="list-button"  onClick={setFilter} value='social'>Social List</button>
+          <button className="list-button"  onClick={setFilter} value='goals'>Goals List</button>
+          <br />
+          <br />
+          </div>
+
+          <label>Tasks from 
             <select onChange={onLimitByChange} value={limitBy}>
               <option value="all">all</option>
               {
@@ -161,7 +174,7 @@ function App() {
                   <option value={listType.type}>{listType.type}</option>
                 ))
               }
-            </select> tasks:
+            </select> list(s):
           </label>
         </header>
         
