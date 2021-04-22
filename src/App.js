@@ -17,6 +17,9 @@ function App() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [limitBy, setLimitBy] = useState(false);
   const [taskType, setTaskType] = useState(null);
+  const [listMap, setListMap] = useState({});
+
+  // so the key for listMap should get used in the JSX template {key}.
   const [list, setList] =  useState([
     { task: 'Read a book', 
       details: '50 pages',  
@@ -38,6 +41,17 @@ function App() {
 
   const [editModalIndex, setEditModalIndex] = useState(null);
 
+  function createList (ev) {
+    let value = ev.target.value;
+    console.log("Let's create a new list!");
+    const newList = {
+      value: []
+    };
+    setListMap(newList);
+    console.log('Here it is: ', newList);
+  }
+
+function setListName (ev) {}
 
   function onAddItem (ev) {
     console.log('This button works');
@@ -57,7 +71,6 @@ function App() {
   }
       
   function onLimitByChange(ev) {
-    // Will be used by challenge 5
     const value = ev.target.value;
     console.log('onLimitByChange', value);
     if (value === 'all') {
@@ -121,11 +134,13 @@ function App() {
     console.log("Here's what you have now: ", list);
   }
 
-
+// create new list modal so that it opens and you can create the name of the list (value: [])
   return (
     <div className="App">
         <header className="App-header">
           <h1 className="title">My To-Do list</h1>
+          <button onClick={createList}>+ New List</button>
+          
           <label> Show
             <select onChange={onLimitByChange} value={limitBy}>
               <option value="all">all</option>
@@ -145,9 +160,10 @@ function App() {
 
               .filter(toDoItem => limitBy === false || toDoItem.type === limitBy)
               .map((toDoItem, index) => (
-                <div>
-                    <p><input type="checkbox" defaultChecked={false} /><b>{toDoItem.task}  </b>  {toDoItem.details}</p> 
-                <p><button onClick={() => setEditModalIndex(index)}>Edit</button></p> 
+                <div className="task-list">
+                    <p><input type="checkbox" defaultChecked={false} /><b>      {toDoItem.task}  </b>  {toDoItem.details} 
+                    <button onClick={() => setEditModalIndex(index)}>Edit</button>
+                    <div className="line">_________________________________________________________________________________</div></p> 
     {
                   editModalIndex === index ? (
                     <div className="EditModal">
