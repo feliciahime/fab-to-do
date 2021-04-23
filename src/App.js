@@ -6,10 +6,12 @@ function App() {
   const [itemDescription, setItemDescription] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [limitBy, setLimitBy] = useState(false);
+  const [itemType, setItemType] = useState({type: 'misc'});
   const [listType, setListType] = useState([
     {type: 'work'},
     {type: 'goals'},
     {type: 'social'},
+    {type: 'misc'},
   	]);
   const [listMap, setListMap] = useState({});
   const [newName, setNewName] = useState("");
@@ -44,7 +46,7 @@ function getLocalStorage () {
 }
 
 
-
+console.log(list);
 
   const [editModalIndex, setEditModalIndex] = useState(null);
 
@@ -66,7 +68,7 @@ function getLocalStorage () {
 
   function onAddItem (ev) {
     console.log('This button works');
-    ev.preventDefault();
+    // ev.preventDefault();
     const newItem = {
       task: toDoItem, 
       details: itemDescription, 
@@ -159,7 +161,6 @@ function setComplete(editModalIndex) {
   function setFilter (ev) {
   	let value = ev.target.value;
   	setLimitBy(value);
-    // setLimitBy(value);
     console.log(value);
     }
 
@@ -195,9 +196,10 @@ useEffect (setLocalStorage, [list]);
           <label>Tasks from 
             <select onChange={onLimitByChange} value={limitBy}>
               <option value="all">all</option>
-              {
-                listType.map(listType => (
-                  <option value={listType.type}>{listType.type}</option>
+              {listType
+
+                	.map(listType => (
+                 	 <option value={listType.type}>{listType.type}</option>
                 ))
               }
             </select> list(s):
@@ -230,8 +232,8 @@ useEffect (setLocalStorage, [list]);
                             value={list[editModalIndex].details}
                             onChange={onDetailsChange} 
                           />
-                          <select value={listType} onChange={onTypeChange}>
-                              <option value="category">category</option>
+                          <select onChange={onTypeChange} value={listType}>
+                              <option value={list[editModalIndex].type}>{list[editModalIndex].type}</option>
                               {
                                 listType.map(listType => (
                                   <option 
@@ -268,13 +270,11 @@ useEffect (setLocalStorage, [list]);
                 onChange={e => setItemDescription(e.target.value)}
                 />
               </label>
-             <select value={listType} onChange={e => setListType(e.target.value)}>
-              <option value="category">category</option>
-              
-			{
-                listType.map(listType => (
+         	<select value={itemType} onChange={e => setItemType(e.target.value)}>
+              <option value={itemType}>category</option>
+              {listType.map(listType => (
                   <option 
-                      value={listType.type}>
+                      value={itemType.type}>
                       {listType.type}
                       </option>
                 ))
