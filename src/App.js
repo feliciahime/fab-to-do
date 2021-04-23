@@ -190,6 +190,7 @@ useEffect (setLocalStorage, [list]);
           <button className="list-button"  onClick={setFilter} value='work'>Work List</button>
           <button className="list-button"  onClick={setFilter} value='social'>Social List</button>
           <button className="list-button"  onClick={setFilter} value='goals'>Goals List</button>
+          <button className="list-button"  onClick={setFilter} value='misc'>Misc List</button>
           <br />
           <br />
           </div>
