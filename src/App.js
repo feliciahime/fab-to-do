@@ -6,7 +6,7 @@ function App() {
   const [itemDescription, setItemDescription] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [limitBy, setLimitBy] = useState(false);
-  const [itemType, setItemType] = useState('');
+  const [itemType, setItemType] = useState('misc');
   const [listType, setListType] = useState([
     {type: 'work'},
     {type: 'goals'},
@@ -68,7 +68,8 @@ console.log(list);
 
   function onAddItem (ev) {
     console.log('This button works');
-    // ev.preventDefault();
+    const value = ev.target.value;
+    ev.preventDefault();
     const newItem = {
       task: toDoItem, 
       details: itemDescription, 
@@ -165,7 +166,7 @@ function setComplete(editModalIndex) {
     }
 
 useEffect (getLocalStorage, []);
-// useEffect (setLocalStorage, [list]);
+useEffect (setLocalStorage, [list]);
 
   return (
     <div className="App">
