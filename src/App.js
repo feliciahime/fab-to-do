@@ -21,14 +21,25 @@ function App() {
       type: 'goals'},
     { task: 'Write a poem', 
       details: 'haiku', 
-      isCompleted: false, 
+      isCompleted: false,  
       type: 'work'},
     { task: 'Cook Dinner', 
       details: 'Fish and chips',  
-      isCompleted: false,
+      isCompleted: false, 
       type: 'social'},
   ]);
-  console.log("Booting up what to do...", listType);
+
+
+	// const list = this.state.list;
+	// 	localStorage.setItem("todolist", JSON.stringify(list));
+	// // Retrieving from local storage
+	// const listString = localStorage.getItem("todolist"); if (listString) { // list exists
+	// const list = JSON.parse(listString); this.setState({
+	// list: list, });
+	// }
+
+
+
 
   const [editModalIndex, setEditModalIndex] = useState(null);
 
@@ -48,8 +59,6 @@ function App() {
   	let newName = ev.target.value;
   }
 
-//create buttons to setLimitBy=true and listType; then create functions for onClick events with buttons
-
   function onAddItem (ev) {
     console.log('This button works');
     ev.preventDefault();
@@ -67,7 +76,7 @@ function App() {
 
   }
       
-  function onLimitByChange(ev) {
+  function onLimitByChange (ev) {
     const value = ev.target.value;
     console.log('onLimitByChange', value);
     if (value === 'all') {
@@ -106,6 +115,17 @@ function App() {
       ])
     }
 
+function setComplete (ev) {
+      const updatedItem = {
+        ...list[editModalIndex],
+      isCompleted: true,
+      };
+      console.log(toDoItem.isCompleted);
+      setList([
+      ...list]);
+      // onDeleteItem();
+      console.log('Task marked complete: ', updatedItem, list);
+    }
 
   function onTypeChange (ev) {
     console.log('Changing task type...');
@@ -186,10 +206,11 @@ function App() {
               .filter(toDoItem => limitBy === false || toDoItem.type === limitBy)
               .map((toDoItem, index) => (
                 <div className="task-list">
-                    <p><input type="checkbox" defaultChecked={false} /><b>      {toDoItem.task}  </b>  {toDoItem.details} 
+                	
+                    <p><input type="checkbox" onClick={setComplete} /><b>      {toDoItem.task}  </b>  {toDoItem.details} 
                     <button onClick={() => setEditModalIndex(index)}>Edit</button>
                     <div className="line">_________________________________________________________________________________</div></p> 
-    {
+    			{
                   editModalIndex === index ? (
                     <div className="EditModal">
                       <div className="EditModal-backdrop"></div>
