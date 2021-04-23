@@ -6,7 +6,7 @@ function App() {
   const [itemDescription, setItemDescription] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [limitBy, setLimitBy] = useState(false);
-  const [itemType, setItemType] = useState({type: 'misc'});
+  const [itemType, setItemType] = useState('');
   const [listType, setListType] = useState([
     {type: 'work'},
     {type: 'goals'},
@@ -73,7 +73,7 @@ console.log(list);
       task: toDoItem, 
       details: itemDescription, 
       isCompleted: false,
-      type: listType, 
+      type: itemType, 
     };
     setList([
       ...list,
@@ -165,7 +165,7 @@ function setComplete(editModalIndex) {
     }
 
 useEffect (getLocalStorage, []);
-useEffect (setLocalStorage, [list]);
+// useEffect (setLocalStorage, [list]);
 
   return (
     <div className="App">
@@ -270,11 +270,11 @@ useEffect (setLocalStorage, [list]);
                 onChange={e => setItemDescription(e.target.value)}
                 />
               </label>
-         	<select value={itemType} onChange={e => setItemType(e.target.value)}>
-              <option value={itemType}>category</option>
+         	<select>
+              <option value={listType.type} onChange={e => setListType(e.target.value)}>category</option>
               {listType.map(listType => (
                   <option 
-                      value={itemType.type}>
+                      value={listType.type}>
                       {listType.type}
                       </option>
                 ))
