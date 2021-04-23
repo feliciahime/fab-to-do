@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -29,14 +29,19 @@ function App() {
       type: 'social'},
   ]);
 
+  	// Setting to local storage
+function setLocalStorage () {
+	localStorage.setItem("todolist", JSON.stringify(list));
+}
 
-	// const list = this.state.list;
-	// 	localStorage.setItem("todolist", JSON.stringify(list));
-	// // Retrieving from local storage
-	// const listString = localStorage.getItem("todolist"); if (listString) { // list exists
-	// const list = JSON.parse(listString); this.setState({
-	// list: list, });
-	// }
+	// Retrieving from local storage
+function getLocalStorage () {
+	const listString = localStorage.getItem("todolist")
+	if (listString) { // list exists
+		const parsedList = JSON.parse(listString);
+		setList(parsedList);
+	}
+}
 
 
 
@@ -115,7 +120,7 @@ function App() {
       ])
     }
 
-function setComplete (ev) {
+function setComplete(editModalIndex) {
       const updatedItem = {
         ...list[editModalIndex],
       isCompleted: true,
@@ -158,7 +163,8 @@ function setComplete (ev) {
     console.log(value);
     }
 
-
+useEffect (getLocalStorage, []);
+useEffect (setLocalStorage, [list]);
 
   return (
     <div className="App">
@@ -207,7 +213,7 @@ function setComplete (ev) {
               .map((toDoItem, index) => (
                 <div className="task-list">
                 	
-                    <p><input type="checkbox" onClick={setComplete} /><b>      {toDoItem.task}  </b>  {toDoItem.details} 
+                    <p><input type="checkbox" onClick={() => setComplete(index)} /><b>      {toDoItem.task}  </b>  {toDoItem.details} 
                     <button onClick={() => setEditModalIndex(index)}>Edit</button>
                     <div className="line">_________________________________________________________________________________</div></p> 
     			{
@@ -264,7 +270,8 @@ function setComplete (ev) {
               </label>
              <select value={listType} onChange={e => setListType(e.target.value)}>
               <option value="category">category</option>
-              {
+              
+			{
                 listType.map(listType => (
                   <option 
                       value={listType.type}>
