@@ -3,15 +3,16 @@ import './App.css';
 
 function App() {
   const [toDoItem, setToDoItem] = useState("");
-  const [itemDescription, setItemDescription] = useState("");
+  const [newItemDescription, setNewItemDescription] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
   const [limitBy, setLimitBy] = useState(false);
   const [itemType, setItemType] = useState('misc');
-  const [listType, setListType] = useState([
-    {type: 'work'},
-    {type: 'goals'},
-    {type: 'social'},
-    {type: 'misc'},
+  const [newItemCategory, setNewItemCategory] = useState('misc');
+  const [typeOptions, setTypeOptions] = useState([
+    'work',
+    'goals',
+    'social',
+    'misc',
   	]);
   const [listMap, setListMap] = useState({});
   const [newName, setNewName] = useState("");
@@ -53,13 +54,12 @@ console.log(list);
   function createList (ev) {
     console.log("Let's create a new list!");
   	ev.preventDefault();
-    const newType = {type: newName};
-    setListType([
-      ...listType,
-      newType
+    setTypeOptions([
+      ...typeOptions,
+      newName
     ]);
     console.log('Category added: ', newName);
-    console.log('Here are all the categories: ', listType);
+    console.log('Here are all the categories: ', typeOptions);
   }
 
   function createListName (ev) {
@@ -69,12 +69,12 @@ console.log(list);
   function onAddItem (ev) {
     console.log('This button works');
     const value = ev.target.value;
-    ev.preventDefault();
+    // ev.preventDefault();
     const newItem = {
       task: toDoItem, 
-      details: itemDescription, 
+      details: newItemDescription, 
       isCompleted: false,
-      type: itemType, 
+      type: newItemCategory, 
     };
     setList([
       ...list,
@@ -154,7 +154,7 @@ function setComplete(editModalIndex) {
     listCopy.splice(editModalIndex, 1);
     setList(listCopy);
     setEditModalIndex(null);
-    let value = toDoItem;
+    // let value = toDoItem;
     console.log("Here's what you have now: ", list);
     }
 
@@ -198,10 +198,10 @@ useEffect (setLocalStorage, [list]);
           <label>Tasks from 
             <select onChange={onLimitByChange} value={limitBy}>
               <option value="all">all</option>
-              {listType
+              {typeOptions
 
-                	.map(listType => (
-                 	 <option value={listType.type}>{listType.type}</option>
+                	.map(option => (
+                 	 <option value={option}>{option}</option>
                 ))
               }
             </select> list(s):
@@ -234,13 +234,13 @@ useEffect (setLocalStorage, [list]);
                             value={list[editModalIndex].details}
                             onChange={onDetailsChange} 
                           />
-                          <select onChange={onTypeChange} value={listType}>
+                          <select onChange={onTypeChange} value={list[editModalIndex].type}>
                               <option value={list[editModalIndex].type}>{list[editModalIndex].type}</option>
                               {
-                                listType.map(listType => (
-                                  <option 
-                                      value={listType.type}>
-                                      {listType.type}
+                                typeOptions.map(option => (
+                                  list[editModalIndex].type === option ? null : <option 
+                                      value={option}>
+                                      {option}
                                       </option>
                                 ))
                               }
@@ -268,16 +268,16 @@ useEffect (setLocalStorage, [list]);
               <label>Details: 
                 <input
                 placeholder=""
-                value={itemDescription}
-                onChange={e => setItemDescription(e.target.value)}
+                value={newItemDescription}
+                onChange={e => setNewItemDescription(e.target.value)}
                 />
               </label>
-         	<select>
-              <option value={listType.type} onChange={e => setListType(e.target.value)}>category</option>
-              {listType.map(listType => (
+         	<select value={newItemCategory} onChange={(e) => setNewItemCategory(e.target.value)}>
+              {/*<option value={typeOptions.type} onChange={e => setTypeOptions(e.target.value)}>category</option>*/}
+              {typeOptions.map(option => (
                   <option 
-                      value={listType.type}>
-                      {listType.type}
+                      value={option}>
+                      {option}
                       </option>
                 ))
               }
